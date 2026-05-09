@@ -1,16 +1,23 @@
 const app = require('./app');
 const db = require('./config/database');
+
 const PORT = process.env.PORT || 3000;
 
-// Test DB Connection and start server
-db.getConnection()
-    .then(() => {
+(async () => {
+    try {
+        const connection = await db.getConnection();
+
         console.log('Successfully connected to MySQL database.');
+
+        connection.release();
+
         app.listen(PORT, () => {
-            console.log(`Server is running in production mode on port ${PORT}`);
+            console.log(`Server is running on port ${PORT}`);
         });
-    })
-    .catch((error) => {
-        console.error('Database connection failed:', error.message);
+
+    } catch (error) {
+        console.error('FULL DATABASE ERROR:', error);
+
         process.exit(1);
-    });
+    }
+})();
