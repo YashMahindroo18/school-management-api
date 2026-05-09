@@ -6,14 +6,17 @@ const pool = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    port: process.env.DB_PORT || 25060, // Aiven usually uses port 25060
+    port: process.env.DB_PORT,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    // Add this SSL object for cloud databases
     ssl: {
         rejectUnauthorized: false 
-    }
+    },
+    // ADD THESE THREE LINES TO FIX ETIMEDOUT
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 10000, // 10 seconds
+    connectTimeout: 20000 // 20 seconds
 });
 
 module.exports = pool;

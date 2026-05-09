@@ -18,5 +18,11 @@ app.use('/api', schoolRoutes);
 
 // Centralized Error Handling
 app.use(errorHandler);
-
+// Health Check Route
+app.get('/', (req, res) => {
+    res.status(200).json({ 
+        success: true, 
+        message: 'Welcome to the School Management API! System is fully operational.' 
+    });
+});
 module.exports = app;
